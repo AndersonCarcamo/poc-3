@@ -27,3 +27,5 @@ En el caso de dashboardService, no se espicica el servicio que realiza este. Y c
 Se ha considerado que el CaseService crea un caso, por lo que consideramos modificar el diagrama de arquitectura. De tal forma que conecte el CaseService con LawyerService para asignarse un abogado al caso. Que previamente se hacía cuando el abogado buscaba en la base de datos. Por lo que el LawerService tiene que conectar al CaseService.
 
 En el caso del Search, no se ha especifícado una solución para resolver la lentitud en el sistema, que es el fallo principal de la arquitectura legacy. Por lo que se ha planteado generar un tsVector dentro de cases, para realizar búsquedas óptimas.
+
+En algunos endpoints está pasando información privada como parámetro.

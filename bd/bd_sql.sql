@@ -68,6 +68,23 @@ CREATE TABLE invoices (
     FOREIGN KEY (receipt_id) REFERENCES receipts (id) ON DELETE RESTRICT
 );
 
+ALTER TABLE cases ADD COLUMN document_with_weights tsvector;
+
+CREATE INDEX idx_fts_case ON cases USING GIN(document_with_weights);
+
+CREATE FUNCTION cases_tsvector_trigger() RETURNS trigger AS $$
+BEGIN
+  NEW.document_with_weights :=
+    setweight(to_tsvector('spanish', coalesce(case_title, '')), 'A') ||
+    setweight(to_tsvector('spanish', coalesce(case_description, '')), 'B');
+  RETURN NEW;
+END
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
+ON cases FOR EACH ROW EXECUTE FUNCTION cases_tsvector_trigger();
+
+
 CREATE OR REPLACE FUNCTION update_modified_column()
 RETURNS TRIGGER AS $$
 BEGIN
