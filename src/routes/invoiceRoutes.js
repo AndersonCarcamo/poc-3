@@ -37,74 +37,68 @@ router.post('/', ctrl.createInvoice);
  * @swagger
  * /invoices:
  *   get:
- *     summary: Obtener todas las facturas
- *     tags: [Invoices]
- *     responses:
- *       200:
- *         description: Lista de facturas
- */
-router.get('/', ctrl.getAllInvoices);
-
-/**
- * @swagger
- * /invoices/{id}:
- *   get:
- *     summary: Obtener factura por ID
+ *     summary: Obtener facturas (por ID o todas)
  *     tags: [Invoices]
  *     parameters:
- *       - in: path
+ *       - in: query
  *         name: id
- *         required: true
- *         schema: { type: string }
+ *         schema:
+ *           type: string
+ *         required: false
+ *         description: UUID de la factura (opcional)
  *     responses:
  *       200:
- *         description: Factura encontrada
+ *         description: Facturas obtenidas
  */
-router.get('/:id', ctrl.getInvoiceById);
+router.get('/', ctrl.getInvoices);
 
 /**
  * @swagger
- * /invoices/{id}:
+ * /invoices:
  *   put:
- *     summary: Actualizar factura
+ *     summary: Actualizar factura por ID
  *     tags: [Invoices]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema: { type: string }
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
+ *             required: [id]
  *             properties:
- *               due_date: { type: string }
- *               tax_amount: { type: number }
- *               total_amount: { type: number }
- *               status: { type: string }
+ *               id:
+ *                 type: string
+ *               due_date:
+ *                 type: string
+ *               tax_amount:
+ *                 type: number
+ *               total_amount:
+ *                 type: number
+ *               status:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Factura actualizada
  */
-router.put('/:id', ctrl.updateInvoice);
+router.put('/', ctrl.updateInvoice);
 
 /**
  * @swagger
- * /invoices/{id}:
+ * /invoices:
  *   delete:
- *     summary: Eliminar factura
+ *     summary: Eliminar factura por ID
  *     tags: [Invoices]
  *     parameters:
- *       - in: path
+ *       - in: query
  *         name: id
+ *         schema:
+ *           type: string
  *         required: true
- *         schema: { type: string }
+ *         description: UUID de la factura
  *     responses:
  *       204:
  *         description: Eliminado correctamente
  */
-router.delete('/:id', ctrl.deleteInvoice);
+router.delete('/', ctrl.deleteInvoice);
 
 module.exports = router;

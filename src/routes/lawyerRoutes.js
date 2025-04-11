@@ -41,57 +41,71 @@ router.post('/', ctrl.createLawyer);
  *   get:
  *     summary: Obtener todos los abogados
  *     tags: [Lawyer]
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: false
+ *         description: UUID del abogado (opcional)
  *     responses:
  *       200:
- *         description: Lista de abogados
+ *         description: Lista o abogado individual
  */
 router.get('/', ctrl.getLawyers);
 
 /**
  * @swagger
- * /lawyer/{id}:
+ * /lawyer:
  *   put:
  *     summary: Actualizar abogado
  *     tags: [Lawyer]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema: { type: string }
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
+ *             required: [id]
  *             properties:
- *               first_name: { type: string }
- *               last_name: { type: string }
- *               email: { type: string }
- *               specialty: { type: string }
- *               phone: { type: string }
- *               hourly_rate: { type: number }
+ *               id:
+ *                 type: string
+ *               first_name:
+ *                 type: string
+ *               last_name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               specialty:
+ *                 type: string
+ *               phone:
+ *                 type: string
+ *               hourly_rate:
+ *                 type: number
  *     responses:
  *       200:
  *         description: Abogado actualizado
  */
-router.put('/:id', ctrl.updateLawyer);
+router.put('/', ctrl.updateLawyer);
+
 
 /**
  * @swagger
- * /lawyer/{id}:
+ * /lawyer:
  *   delete:
  *     summary: Eliminar abogado
  *     tags: [Lawyer]
  *     parameters:
- *       - in: path
+ *       - in: query
  *         name: id
  *         required: true
- *         schema: { type: string }
+ *         schema:
+ *           type: string
+ *         description: UUID del abogado
  *     responses:
  *       204:
  *         description: Eliminado correctamente
  */
-router.delete('/:id', ctrl.deleteLawyer);
+router.delete('/', ctrl.deleteLawyer);
 
 module.exports = router;
