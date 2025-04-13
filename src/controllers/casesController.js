@@ -2,8 +2,12 @@ const pool = require('../config/db');
 
 // GET
 exports.getCases = async (req, res) => {
-    const { case_status, lawyer_id, client_id, page = 1, limit = 10 } = req.query;
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
     const offset = (page - 1) * limit;
+
+    const { case_status, lawyer_id, client_id } = req.query;
 
     try {
         let query = `SELECT cases.id, case_title,
@@ -42,7 +46,7 @@ exports.getCases = async (req, res) => {
         const result = await pool.query(query, params);
         res.json(result.rows);
     } catch (error) {
-        res.status(500).json({ error: err.message });
+        res.status(500).json({ error: error.message });
     }
 };
 
@@ -53,8 +57,8 @@ exports.createCase = async (req, res) => {
     try {
         // el cliente y abogado tienen que estar almacenados en la base de datos
         const [lawyer, client] = await Promise.all([
-            pool.query('SELECT id FROM lawyers WHERE id = $1', [lawyer_id]),
-            pool.query('SELECT id FROM clients WHERE id = $1', [client_id])
+            pool.query('SELECT id FROM lawyers WHERE id = $1::uuid', [lawyer_id]),
+            pool.query('SELECT id FROM clients WHERE id = $1::uuid', [client_id])
         ]);
 
         if (lawyer.rows.length === 0 || client.rows.length === 0) {
@@ -71,7 +75,7 @@ exports.createCase = async (req, res) => {
 
         res.status(201).json(result.rows[0]);
     } catch (error) {
-        res.status(500).json({ error: err.message });
+        res.status(500).json({ error: error.message });
     }
 };
 
@@ -105,8 +109,8 @@ exports.getCaseById = async (req, res) => {
             ...caseResult.rows[0],
             receipts: receipts.rows
         });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 };
 
@@ -132,7 +136,7 @@ exports.updateCase = async (req, res) => {
 
         res.json(result.rows[0]);
     } catch (error) {
-        res.status(500).json({ error: err.message });
+        res.status(500).json({ error: error.message });
     }
 };
 
