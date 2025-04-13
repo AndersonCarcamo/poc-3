@@ -28,16 +28,17 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 const lawyerRoutes = require('./routes/lawyerRoutes');
 const invoiceRoutes = require('./routes/invoiceRoutes');
 const searchRoutes = require('./routes/searchRoutes');
-
+const clientRoutes = require('./routes/clientRoutes');
+const recepitsRoutes = require('./routes/receiptsRoutes')
 const casesRoutes = require('./routes/casesRoutes');	
 
 app.use('/lawyer', lawyerRoutes);
 app.use('/invoices', invoiceRoutes);
 app.use('/search', searchRoutes);
-
+app.use('/client',clientRoutes);
 app.use('/cases', casesRoutes);
+app.use('/receipts',recepitsRoutes)
 
-// Iniciar servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
