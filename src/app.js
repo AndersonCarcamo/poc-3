@@ -29,9 +29,13 @@ const lawyerRoutes = require('./routes/lawyerRoutes');
 const invoiceRoutes = require('./routes/invoiceRoutes');
 const searchRoutes = require('./routes/searchRoutes');
 
+const casesRoutes = require('./routes/casesRoutes');	
+
 app.use('/lawyer', lawyerRoutes);
 app.use('/invoices', invoiceRoutes);
 app.use('/search', searchRoutes);
+
+app.use('/cases', casesRoutes);
 
 // Iniciar servidor
 const PORT = process.env.PORT || 3000;
